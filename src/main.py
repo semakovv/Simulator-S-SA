@@ -19,9 +19,13 @@ startButton = button.buttonClass(100, 200, startButtonImage)
 exitButton = button.buttonClass(450, 200, exitButtonImage)
 volumeButton = button.buttonClass(1100, 0, volumeButtonImage)
 
+soundMenu = pygame.mixer.Sound("assets/sounds/soundMenu.mp3")
+soundGame = pygame.mixer.Sound("assets/sounds/soundGame.mp3")
+
 def redrawMenu():
     window.blit(backGround, (0, 0))
     # window.fill((255, 255, 255))
+    soundMenu.play(-1)
 
     if startButton.draw(window):
         return "start"
@@ -37,6 +41,11 @@ def redrawMenu():
 def redrawGame():
     window.blit(backGround, (0, 0))
     # window.fill((255, 255, 255))
+    soundGame.play(-1)
+
+    if volumeButton.draw(window):
+        pass
+
     return "game"
 
 run = True
