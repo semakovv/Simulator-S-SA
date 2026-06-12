@@ -18,23 +18,15 @@ menuButtonImage = pygame.image.load("assets/images/menuButton.jpg")
 settingsButtonImage = pygame.image.load("assets/images/settingsButton.jpeg")
 exitButtonImage = pygame.image.load("assets/images/exitButton.png")
 startButton = button.link(600, 400, startButtonImage)
-menuButton = button.link(1000, 0, menuButtonImage)
+menuButton = button.link(1800, 0, menuButtonImage)
 settingsButton = button.link(1800, 0, settingsButtonImage)
 exitButton = button.link(1000, 400, exitButtonImage)
 
-volumeBackButtonImage = pygame.image.load("assets/images/backCounterButton.png")
-frameBackButtonImage = pygame.image.load("assets/images/backCounterButton.png")
-volumeFrontButtonImage = pygame.image.load("assets/images/frontCounterButton.png")
-frameFrontButtonImage = pygame.image.load("assets/images/frontCounterButton.png")
-volumeButton = button.link(600, 400, volumeFrontButtonImage)
-frameButton = button.link(600, 600, frameFrontButtonImage)
-#
 #
 soundMenu = pygame.mixer.Sound("assets/sounds/soundMenu.mp3")
 soundGame = pygame.mixer.Sound("assets/sounds/soundGame.mp3")
-#
-volume = settings.parameters()
-frame = settings.parameters()
+
+volumeButton = button.link(600, 400)
 # resolution = settings.parameters()
 
 class redraw():
@@ -48,7 +40,7 @@ class redraw():
         window.blit(backGround, (0, 0))
         # window.fill((255, 255, 255))
         soundMenu.play(-1)
-        soundMenu.set_volume(volume.setVolume(0))
+        soundMenu.set_volume(0.5)
         if startButton.press(window):
             soundMenu.stop()
             return "game"
@@ -65,7 +57,7 @@ class redraw():
         window.blit(backGround, (0, 0))
         # window.fill((255, 255, 255))
         soundGame.play(-1)
-        soundGame.set_volume(volume.setVolume(0))
+        soundGame.set_volume(1.0)
         if menuButton.press(window):
             soundGame.stop()
             return "menu"
@@ -76,15 +68,9 @@ class redraw():
         
         """
         window.blit(backGround, (0, 0))
-        window.blit(volumeBackButtonImage, (600, 400))
-        window.blit(frameBackButtonImage, (600, 400))
         # window.fill((255, 255, 255))
-        if volumeButton.press(window):
+        if volumeButton.move(window):
             return "setting"
-        if frameButton.press(window):
-            return "setting"
-        if exitButton.press(window):
-            return "exit"
         return "setting"
 
 #
@@ -92,7 +78,7 @@ run = True
 gameState = "menu"
 #mainloop
 while run:
-    clock.tick(frame.setFrame(60))
+    clock.tick(60)
     # print(gameState)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
