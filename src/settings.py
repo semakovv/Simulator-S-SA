@@ -6,10 +6,11 @@ class parameters():
         """
         
         """
-        def __init__(self):
+        def __init__(self, button):
             """
             
             """
+            self.button = button
             self._frame = 60
             self._volume = 0.0
             self._resolution = (1980, 1020)
@@ -36,8 +37,6 @@ class parameters():
             """
             pass
 
-param = parameters()
-param.setFrame(60)
 
 
     
