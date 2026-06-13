@@ -7,7 +7,7 @@ pygame.init()
 winWidth = 1920
 winHeigth = 1080
 window = pygame.display.set_mode((winWidth, winHeigth))
-pygame.display.set_caption("Simulator S&SA")
+pygame.display.set_caption("Simulator S&SA DEMO")
 backGround = pygame.image.load("assets/images/backGround.jpg")
 # pygame.display.set_icon("")
 #
@@ -21,14 +21,15 @@ startButton = button.link(600, 400, startButtonImage)
 menuButton = button.link(1800, 0, menuButtonImage)
 settingsButton = button.link(1800, 0, settingsButtonImage)
 exitButton = button.link(1000, 400, exitButtonImage)
-
 #
 soundMenu = pygame.mixer.Sound("assets/sounds/soundMenu.mp3")
 soundGame = pygame.mixer.Sound("assets/sounds/soundGame.mp3")
-
+#
 volumeButton = button.link(600, 400)
-# resolution = settings.parameters()
-
+volume = 0.5
+frameButton = button.link(600, 600)
+# resolution = button.link(600, 800)
+frame = 30
 class redraw():
     """
     
@@ -40,28 +41,30 @@ class redraw():
         window.blit(backGround, (0, 0))
         # window.fill((255, 255, 255))
         soundMenu.play(-1)
-        soundMenu.set_volume(0.5)
+        soundMenu.set_volume(volume)
         if startButton.press(window):
-            soundMenu.stop()
             return "game"
-        if settingsButton.press(window):
+        elif settingsButton.press(window):
             return "setting"
-        if exitButton.press(window):
+        elif exitButton.press(window):
             return "exit"
-        return "menu"
+        else:
+            return "menu"
 
     def game():
         """
         
         """
         window.blit(backGround, (0, 0))
+        pygame.mixer.stop()
         # window.fill((255, 255, 255))
         soundGame.play(-1)
-        soundGame.set_volume(1.0)
-        if menuButton.press(window):
-            soundGame.stop()
-            return "menu"
-        return "game"
+        soundGame.set_volume(volume)
+        # if menuButton.press(window):
+        #     soundGame.stop()
+        #     return "menu"
+        # else:
+        #     return "game"
     
     def setting():
         """
@@ -69,16 +72,24 @@ class redraw():
         """
         window.blit(backGround, (0, 0))
         # window.fill((255, 255, 255))
-        if volumeButton.move(window):
-            return "setting"
-        return "setting"
+        volume = settings.parameters(volumeButton).setVolume()
+        frame = settings.parameters(frameButton).setFrame()
+        soundGame.play(-1)
+        soundGame.set_volume(volume)
+            
 
-#
+        # frameButton.move(window, "frame")
+        # if menuButton.press(window):
+        #     return "menu"
+        # else:
+        #     return "game"
+        return "setting"
+#   
 run = True
 gameState = "menu"
 #mainloop
 while run:
-    clock.tick(60)
+    clock.tick(frame)
     # print(gameState)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -91,6 +102,7 @@ while run:
         gameState = redraw.setting()
     if gameState == "exit":
         run = False
+    print(gameState)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
         run = False
