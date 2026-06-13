@@ -1,9 +1,7 @@
 import pygame
-import settings
 
 movingButtonImage = pygame.image.load("assets/images/movingButton.png")
 holdingButtonImage = pygame.image.load("assets/images/holdingButton.png")
-
 
 #button class
 class link():
@@ -25,56 +23,56 @@ class link():
 		self.frontRect.topleft = (x, y)
 		self.backRect.topleft = (x, y)
 		self.clicked = False
+		self.offset = 0
+
 
 	def press(self, surface):
 		"""
 		
 		"""
-		action = False
 		mousePosition = pygame.mouse.get_pos()
-		if self.frontRect.collidepoint(mousePosition):
-			if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-				self.clicked = True
-				action = True
-		if pygame.mouse.get_pressed()[0] == 0:
+		mousePress = pygame.mouse.get_pressed()
+		if mousePress[0] == 1 and self.frontRect.collidepoint(mousePosition) and not(self.clicked):
+			self.clicked = True
+			# print(self.clicked)
+		if mousePress[0] == 0:
 			self.clicked = False
-		surface.blit(self.frontImage, (self.frontRect.x, self.frontRect.y))
-		# print(mousePosition)
-		# print(action)
-		return action
+		surface.blit(self.frontImage, self.frontRect)
+		return self.clicked
 	
-	def move(self, surface):
+		# mousePosition = pygame.mouse.get_pos()
+		# mousePress = pygame.mouse.get_pressed()
+		# if self.frontRect.collidepoint(mousePosition):
+		# 	if mousePress[0] == 1 and self.clicked == False:
+		# 		self.clicked = True
+		# if mousePress[0] == 0:
+		# 	self.clicked = False
+		# surface.blit(self.frontImage, self.frontRect)
+		# # print(mousePosition)
+		# # print(self.clicked)
+		# return self.clicked
+
+	def move(self, surface, name = ""):
 		"""
 		
 		"""
-		xMousePosition = pygame.mouse.get_pos()[0]
-		surface.blit(self.backImage, (self.backRect.x, self.backRect.y))
-		surface.blit(self.frontImage, (self.frontRect.x, self.frontRect.y))
+		font = pygame.font.SysFont("comicsans", 30, True)
+		text = font.render(f"{name}", 1, (255, 255, 255))
+		surface.blit(text, (self.backRect.x , self.backRect.y - 40))
 		mousePosition = pygame.mouse.get_pos()
-		if self.frontRect.collidepoint(mousePosition):
-			if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-				# if link.press(surface):
-				self.clicked = True
-				# self.frontRect.x = surface.get_width() - xMousePosition + (self.frontWidth // 2) + self.backRect.x
-				print(self.frontRect.x)
-				self.frontRect.x = xMousePosition
-				surface.blit(self.frontImage, (self.frontRect.x, self.frontRect.y))
-		if pygame.mouse.get_pressed()[0] == 0:
+		mousePress = pygame.mouse.get_pressed()
+		min_x = self.backRect.x
+		max_x = self.backRect.x + self.backRect.width - self.frontWidth
+		if mousePress[0] == 1 and self.frontRect.collidepoint(mousePosition) and not(self.clicked):
+			self.clicked = True
+			# print(self.clicked)
+			self.offset = mousePosition[0] - self.frontRect.x
+		if self.clicked:
+			self.frontRect.x = mousePosition[0] - self.offset
+			self.frontRect.x = max(min_x, min(self.frontRect.x, max_x))
+		if mousePress[0] == 0:
 			self.clicked = False
-
-
-		num = self.backWidth + self.frontWidth - self.frontRect.x
-		# print(num)
-		return num
-
-
-# volumeButton = link(600, 400, volumeFrontButtonImage)
-# frameButton = link(600, 600, frameFrontButtonImage)
-# volume = settings.parameters(volumeButton)
-# frame = settings.parameters(frameButton)
-#         window.blit(volumeBackButtonImage, (600, 400))
-#         window.blit(frameBackButtonImage, (600, 400))
-        # if volumeButton.press(window):
-        #     return "setting"
-        # if frameButton.press(window):
-        #     return "setting"
+		surface.blit(self.backImage, self.backRect)
+		surface.blit(self.frontImage, self.frontRect)
+		procent = (self.frontRect.x - self.backRect.x) // 10
+		return procent
