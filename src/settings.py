@@ -1,40 +1,43 @@
-import pygame
-
 # setting class
 class parameters():
         """
         
         """
-        def __init__(self, procent):
+        def __init__(self):
             """
             
             """
-            self.procent = procent
-            self._frame = 30
-            self._volume = 0.5
-            self._resolution = (1980, 1020)
+            self.frame = 60
+            self.volume = 0.5
+            self.resolution = (1920, 1080)
 
-        def setFrame(self):
+        def getFrame(self):
+            return self.frame
+
+        def getVolume(self):
+            return self.volume
+
+        def setFrame(self, procent):
             """
             
             """
-            self._frame = ((self.procent * 120) / 100) + self._frame
-            return self._frame
+            self.frame = int(30 + (procent / 100) * (144 - 30))
+            return self.frame
         
-        def setVolume(self):
+        def setVolume(self, procent):
             """
             
             """
-            self._volume = ((self.procent) / 100)
-            return self._volume
+            self.volume = procent / 100.0
+            return self.volume
         
-        def setResolution(self, resolution):
+        def setResolution(self):
             """
             
             """
-            if self._resolution == (1980, 1020):
-                self._resolution = (1980, 1020)
-            return self._resolution
+            if self.resolution == (1920, 1080):
+                self.resolution = (1920, 1080)
+            return self.resolution
 
 
 
