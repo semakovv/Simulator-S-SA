@@ -25,11 +25,14 @@ exitButton = button.link(1000, 400, exitButtonImage)
 soundMenu = pygame.mixer.Sound("assets/sounds/soundMenu.mp3")
 soundGame = pygame.mixer.Sound("assets/sounds/soundGame.mp3")
 #
+gameSettings = settings.parameters()
 volumeButton = button.link(600, 400)
-volume = 0.5
+volume = gameSettings.getVolume()
 frameButton = button.link(600, 600)
+frame = gameSettings.getFrame()
 # resolution = button.link(600, 800)
-frame = 30
+
+
 class redraw():
     """
     
@@ -40,6 +43,7 @@ class redraw():
         """
         window.blit(backGround, (0, 0))
         # window.fill((255, 255, 255))
+        soundGame.stop()
         soundMenu.play(-1)
         soundMenu.set_volume(volume)
         if startButton.press(window):
@@ -56,34 +60,34 @@ class redraw():
         
         """
         window.blit(backGround, (0, 0))
-        pygame.mixer.stop()
         # window.fill((255, 255, 255))
+        soundMenu.stop()
         soundGame.play(-1)
         soundGame.set_volume(volume)
-        # if menuButton.press(window):
-        #     soundGame.stop()
-        #     return "menu"
-        # else:
-        #     return "game"
+        if menuButton.press(window):
+            return "menu"
+        else:
+            return "game"
     
     def setting():
         """
         
         """
+        global gameSettings, volume, frame
         window.blit(backGround, (0, 0))
         # window.fill((255, 255, 255))
-        volume = settings.parameters(volumeButton).setVolume()
-        frame = settings.parameters(frameButton).setFrame()
-        soundGame.play(-1)
+        volumeProcent = volumeButton.move(window, "volume")
+        frameProcent = frameButton.move(window, "frame")
+        gameSettings.setVolume(volumeProcent)
+        gameSettings.setFrame(frameProcent)
+        volume = gameSettings.getVolume()
+        frame = gameSettings.getFrame()
+        soundMenu.set_volume(volume)
         soundGame.set_volume(volume)
-            
-
-        # frameButton.move(window, "frame")
-        # if menuButton.press(window):
-        #     return "menu"
-        # else:
-        #     return "game"
-        return "setting"
+        if menuButton.press(window):
+            return "menu"
+        else:
+            return "setting"
 #   
 run = True
 gameState = "menu"
@@ -91,6 +95,7 @@ gameState = "menu"
 while run:
     clock.tick(frame)
     # print(gameState)
+    # print(volume)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
@@ -102,7 +107,6 @@ while run:
         gameState = redraw.setting()
     if gameState == "exit":
         run = False
-    print(gameState)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
         run = False
