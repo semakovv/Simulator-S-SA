@@ -32,13 +32,15 @@ class link():
 		"""
 		mousePosition = pygame.mouse.get_pos()
 		mousePress = pygame.mouse.get_pressed()
+		action = False
 		if mousePress[0] == 1 and self.frontRect.collidepoint(mousePosition) and not(self.clicked):
 			self.clicked = True
+			action = True
 			# print(self.clicked)
 		if mousePress[0] == 0:
 			self.clicked = False
 		surface.blit(self.frontImage, self.frontRect)
-		return self.clicked
+		return action
 	
 		# mousePosition = pygame.mouse.get_pos()
 		# mousePress = pygame.mouse.get_pressed()
@@ -56,9 +58,6 @@ class link():
 		"""
 		
 		"""
-		font = pygame.font.SysFont("comicsans", 30, True)
-		text = font.render(f"{name}", 1, (255, 255, 255))
-		surface.blit(text, (self.backRect.x , self.backRect.y - 40))
 		mousePosition = pygame.mouse.get_pos()
 		mousePress = pygame.mouse.get_pressed()
 		min_x = self.backRect.x
@@ -72,7 +71,10 @@ class link():
 			self.frontRect.x = max(min_x, min(self.frontRect.x, max_x))
 		if mousePress[0] == 0:
 			self.clicked = False
+		procent = (self.frontRect.x - self.backRect.x) // 10
 		surface.blit(self.backImage, self.backRect)
 		surface.blit(self.frontImage, self.frontRect)
-		procent = (self.frontRect.x - self.backRect.x) // 10
+		font = pygame.font.SysFont("comicsans", 30, True)
+		text = font.render(f"{name} - {procent}%", 1, (255, 255, 255))
+		surface.blit(text, (self.backRect.x , self.backRect.y - 40))
 		return procent
