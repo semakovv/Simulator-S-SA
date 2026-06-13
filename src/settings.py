@@ -1,41 +1,40 @@
 import pygame
-import button
 
 # setting class
 class parameters():
         """
         
         """
-        def __init__(self, button):
+        def __init__(self, procent):
             """
             
             """
-            self.button = button
-            self._frame = 60
-            self._volume = 0.0
+            self.procent = procent
+            self._frame = 30
+            self._volume = 0.5
             self._resolution = (1980, 1020)
 
-        def setFrame(self, frame):
+        def setFrame(self):
             """
             
             """
-            if 30 <= frame <= 144:
-                self._frame = frame
+            self._frame = ((self.procent * 120) / 100) + self._frame
             return self._frame
-
-        def setVolume(self, volume):
+        
+        def setVolume(self):
             """
             
             """
-            if 0.0 <= volume <= 1.0:
-                self._volume = volume
+            self._volume = ((self.procent) / 100)
             return self._volume
         
         def setResolution(self, resolution):
             """
             
             """
-            pass
+            if self._resolution == (1980, 1020):
+                self._resolution = (1980, 1020)
+            return self._resolution
 
 
 
