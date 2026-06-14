@@ -27,6 +27,9 @@ class link():
 		self.offset = 0
 
 	def collide(self):
+		"""
+		
+		"""
 		mousePosition = pygame.mouse.get_pos()
 		if self.frontRect.x <= mousePosition[0] and self.frontRect.y <= mousePosition[1]:
 			if self.frontRect.x + self.frontWidth >= mousePosition[0] and self.frontRect.y + self.frontHeight >= mousePosition[1]:
@@ -52,18 +55,6 @@ class link():
 			self.clicked = False
 		surface.blit(self.frontImage, self.frontRect)
 		return action
-	
-		# mousePosition = pygame.mouse.get_pos()
-		# mousePress = pygame.mouse.get_pressed()
-		# if self.frontRect.collidepoint(mousePosition):
-		# 	if mousePress[0] == 1 and self.clicked == False:
-		# 		self.clicked = True
-		# if mousePress[0] == 0:
-		# 	self.clicked = False
-		# surface.blit(self.frontImage, self.frontRect)
-		# # print(mousePosition)
-		# # print(self.clicked)
-		# return self.clicked
 
 	def move(self, surface, name = ""):
 		"""

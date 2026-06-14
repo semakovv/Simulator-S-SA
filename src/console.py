@@ -27,9 +27,9 @@ class сli():
         self.consoleRect_x = 560
         self.consoleRect_y = 240
         self.consoleRect = (self.consoleRect_x, self.consoleRect_y)
-        self.name = os.path.basename(os.getcwd())
+        # self.name = os.path.basename(os.getcwd())
 
-    def draw(self, surface, event):
+    def inputCLI(self, event):
         """
         
         """
@@ -37,24 +37,33 @@ class сli():
             if event.key == pygame.K_RETURN:
                 print("Введено:", self.inputClient)
                 self.history.append(self.inputClient)
+                self.commands(self.inputClient)
                 self.inputClient = ""
-                self.fontRect_y += self.fontSize
-            if self.fontRect_y == self.consoleHeight + self.fontSize:
-                self.console.fill((0, 0, 0))
             elif event.key == pygame.K_BACKSPACE:
                 self.inputClient = self.inputClient[:-1]
             else:
                 if event.unicode.isprintable():
                     self.inputClient += event.unicode
-        self.console.fill((0, 0, 0))
-        text = self.font.render(self.inputClient + "_", True, (255, 255, 255))
-        self.console.blit(text, self.fontRect)
-        surface.blit(self.console, self.consoleRect)
     
-    def commands(self):
+    def commands(self, command):
         """
         
         """
-        pass
+        command = command.split(" ")
+
+        if command[0] == "help":
+            self.history.append("ip")
+        else:
+            self.history.append("Error")
+
+    def outputCLI(self, surface):
+        """
         
+        """
+        self.console.fill((0, 0, 0))
+        text = self.font.render(">" + self.inputClient + "_", True, (255, 255, 255))
+        self.console.blit(text, self.fontRect)
+        # self.fontRect_y += self.fontSize
+        surface.blit(self.console, self.consoleRect)
+
 
