@@ -13,9 +13,9 @@ class сli():
         self.name = os.path.basename(os.getcwd())
 
     def draw(self, surface):
-        for event in pygame.event.get():
-            if event.unicode and event.unicode.isprintable():
-                self.inputClient += event.unicode
+        # for event in pygame.event.get():
+        #     if event.unicode and event.unicode.isprintable():
+        #         self.inputClient += event.unicode
         console = pygame.Surface((800, 600))
         console.fill((0, 0, 0))
         font = pygame.font.SysFont('monospace', self.fontSize)
