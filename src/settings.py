@@ -7,37 +7,37 @@ class parameters():
             """
             
             """
-            self.frame = 60
-            self.volume = 0.5
-            self.resolution = (1920, 1080)
+            self._frame = 60
+            self._volume = 0.5
+            self._resolution = (1920, 1080)
 
         def getFrame(self):
-            return self.frame
+            return self._frame
 
         def getVolume(self):
-            return self.volume
+            return self._volume
 
         def setFrame(self, procent):
             """
             
             """
-            self.frame = int(30 + (procent / 100) * (144 - 30))
-            return self.frame
+            self._frame = int(30 + (procent / 100) * (144 - 30))
+            return self._frame
         
         def setVolume(self, procent):
             """
             
             """
-            self.volume = procent / 100.0
-            return self.volume
+            self._volume = procent / 100.0
+            return self._volume
         
         def setResolution(self):
             """
             
             """
-            if self.resolution == (1920, 1080):
-                self.resolution = (1920, 1080)
-            return self.resolution
+            if self._resolution == (1920, 1080):
+                self._resolution = (1920, 1080)
+            return self._resolution
 
 
 
