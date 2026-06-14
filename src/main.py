@@ -1,6 +1,7 @@
 import pygame
 import button
 import settings
+import console
 #
 pygame.init()
 #
@@ -32,6 +33,11 @@ frameButton = button.link(600, 600)
 frame = gameSettings.getFrame()
 # resolution = button.link(600, 800)
 
+terminal = console.сli()
+cliItemImage = pygame.image.load("assets/images/cliItem.jpg")
+cliItem = button.link(560, 240, cliItemImage)
+closeItemImage = pygame.image.load("assets/images/closeItem.png")
+closeItem = button.link(1360, 240, closeItemImage)
 
 class redraw():
     """
@@ -48,12 +54,11 @@ class redraw():
         soundMenu.set_volume(volume)
         if startButton.press(window):
             return "game"
-        elif settingsButton.press(window):
+        if settingsButton.press(window):
             return "setting"
-        elif exitButton.press(window):
+        if exitButton.press(window):
             return "exit"
-        else:
-            return "menu"
+        return "menu"
 
     def game():
         """
@@ -66,8 +71,7 @@ class redraw():
         soundGame.set_volume(volume)
         if menuButton.press(window):
             return "menu"
-        else:
-            return "game"
+        return "game"
     
     def setting():
         """
@@ -86,27 +90,39 @@ class redraw():
         soundGame.set_volume(volume)
         if menuButton.press(window):
             return "menu"
-        else:
-            return "setting"
+        return "setting"
 #   
 run = True
 gameState = "menu"
+gameEvent = "desktop"
 #mainloop
 while run:
     clock.tick(frame)
-    # print(gameState)
+    # print(gameEvent)
+    print(gameState)
     # print(volume)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
     if gameState == "menu":
         gameState = redraw.menu()
+
     if gameState == "game":
         gameState = redraw.game()
+        if gameEvent == "desktop":
+            if cliItem.press(window):
+                gameEvent = "cli"
+        if gameEvent == "cli":
+            terminal.draw(window)
+            if closeItem.press(window):
+                gameEvent = "desktop"
+
     if gameState == "setting":
         gameState = redraw.setting()
+
     if gameState == "exit":
         run = False
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
         run = False
