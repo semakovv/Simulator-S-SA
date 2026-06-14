@@ -5,9 +5,13 @@ import console
 #
 pygame.init()
 #
-winWidth = 1920
-winHeigth = 1080
-window = pygame.display.set_mode((winWidth, winHeigth))
+gameSettings = settings.parameters()
+volumeButton = button.link(600, 400)
+volume = gameSettings.getVolume()
+frameButton = button.link(600, 600)
+frame = gameSettings.getFrame()
+resolution = gameSettings.getResolution()
+window = pygame.display.set_mode(resolution)
 pygame.display.set_caption("Simulator S&SA DEMO")
 backGround = pygame.image.load("assets/images/backGround.jpg")
 # pygame.display.set_icon("")
@@ -26,14 +30,6 @@ exitButton = button.link(1000, 400, exitButtonImage)
 soundMenu = pygame.mixer.Sound("assets/sounds/soundMenu.mp3")
 soundGame = pygame.mixer.Sound("assets/sounds/soundGame.mp3")
 #
-gameSettings = settings.parameters()
-volumeButton = button.link(600, 400)
-volume = gameSettings.getVolume()
-frameButton = button.link(600, 600)
-frame = gameSettings.getFrame()
-# resolution = button.link(600, 800)
-
-terminal = console.сli()
 cliItemImage = pygame.image.load("assets/images/cliItem.jpg")
 cliItem = button.link(560, 240, cliItemImage)
 closeItemImage = pygame.image.load("assets/images/closeItem.png")
@@ -51,7 +47,6 @@ class redraw():
         # window.fill((255, 255, 255))
         soundGame.stop()
         soundMenu.play(-1)
-        soundMenu.set_volume(volume)
         if startButton.press(window):
             return "game"
         if settingsButton.press(window):
@@ -68,7 +63,6 @@ class redraw():
         # window.fill((255, 255, 255))
         soundMenu.stop()
         soundGame.play(-1)
-        soundGame.set_volume(volume)
         if menuButton.press(window):
             return "menu"
         return "game"
@@ -93,39 +87,36 @@ class redraw():
         return "setting"
 #   
 run = True
+terminal = console.сli()
 gameState = "menu"
 gameEvent = "desktop"
 #mainloop
 while run:
     clock.tick(frame)
     # print(gameEvent)
-    print(gameState)
+    # print(gameState)
     # print(volume)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-    if gameState == "menu":
-        gameState = redraw.menu()
-
-    if gameState == "game":
-        gameState = redraw.game()
-        if gameEvent == "desktop":
-            if cliItem.press(window):
-                gameEvent = "cli"
-        if gameEvent == "cli":
-            terminal.draw(window)
-            if closeItem.press(window):
-                gameEvent = "desktop"
-
-    if gameState == "setting":
-        gameState = redraw.setting()
-
-    if gameState == "exit":
-        run = False
-
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_ESCAPE]:
-        run = False
+        if gameState == "menu":
+            gameState = redraw.menu()
+        if gameState == "game":
+            gameState = redraw.game()
+            if gameEvent == "desktop":
+                if cliItem.press(window):
+                    gameEvent = "cli"
+            if gameEvent == "cli":
+                terminal.draw(window, event)
+                if closeItem.press(window):
+                    gameEvent = "desktop"
+        if gameState == "setting":
+            gameState = redraw.setting()
+        if gameState == "exit":
+            run = False
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_ESCAPE]:
+            run = False
     pygame.display.update()
 
 pygame.quit()

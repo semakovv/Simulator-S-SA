@@ -22,18 +22,29 @@ class link():
 		self.backRect = self.backImage.get_rect()
 		self.frontRect.topleft = (x, y)
 		self.backRect.topleft = (x, y)
+		self.frontRectCollide = False
 		self.clicked = False
 		self.offset = 0
 
+	def collide(self):
+		mousePosition = pygame.mouse.get_pos()
+		if self.frontRect.x <= mousePosition[0] and self.frontRect.y <= mousePosition[1]:
+			if self.frontRect.x + self.frontWidth >= mousePosition[0] and self.frontRect.y + self.frontHeight >= mousePosition[1]:
+				self.frontRectCollide = True
+				return self.frontRectCollide
+			else:
+				self.frontRectCollide = False
+				return self.frontRectCollide
+		# print(self.frontRectCollide)	
 
 	def press(self, surface):
 		"""
 		
 		"""
-		mousePosition = pygame.mouse.get_pos()
+		buttonCollide = self.collide()
 		mousePress = pygame.mouse.get_pressed()
 		action = False
-		if mousePress[0] == 1 and self.frontRect.collidepoint(mousePosition) and not(self.clicked):
+		if mousePress[0] == 1 and buttonCollide and not(self.clicked):
 			self.clicked = True
 			action = True
 			# print(self.clicked)
@@ -58,11 +69,12 @@ class link():
 		"""
 		
 		"""
+		buttonCollide = self.collide()
 		mousePosition = pygame.mouse.get_pos()
 		mousePress = pygame.mouse.get_pressed()
 		min_x = self.backRect.x
 		max_x = self.backRect.x + self.backRect.width - self.frontWidth
-		if mousePress[0] == 1 and self.frontRect.collidepoint(mousePosition) and not(self.clicked):
+		if mousePress[0] == 1 and buttonCollide and not(self.clicked):
 			self.clicked = True
 			# print(self.clicked)
 			self.offset = mousePosition[0] - self.frontRect.x
