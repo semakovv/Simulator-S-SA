@@ -9,27 +9,29 @@ class DialogueManager:
         self.nodes = {}
         self.current_node = None
 
-        # Настройки окна диалога
         self.window_width = 800
         self.window_height = 300
-        self.bg_color = (0, 0, 0, 200)  # чёрный полупрозрачный
+        self.bg_color = (0, 0, 0, 200)  
         self.border_color = (255, 255, 255)
         self.text_color = (255, 255, 255)
         self.choice_color = (180, 180, 180)
         self.choice_selected_color = (255, 255, 0)
         self.selected_choice = 0
 
-        # Позиция окна (центр экрана)
         self.rect = pygame.Rect(0, 0, self.window_width, self.window_height)
         self.rect.center = (screen.get_width() // 2, screen.get_height() // 2)
 
     def load_dialogue(self, json_path):
-        """Загружает диалог из JSON-файла."""
+        """
+        
+        """
         with open(json_path, 'r', encoding='utf-8') as f:
             self.nodes = json.load(f)
 
     def start(self, start_node):
-        """Начинает диалог с указанного узла."""
+        """
+        
+        """
         if start_node in self.nodes:
             self.current_node = self.nodes[start_node]
             self.active = True
@@ -38,11 +40,12 @@ class DialogueManager:
             print(f"Ошибка: узел {start_node} не найден")
 
     def handle_event(self, event):
-        """Обрабатывает события (клавиши)."""
+        """
+        
+        """
         if not self.active:
             return
         if event.type == pygame.KEYDOWN:
-            # Если есть варианты выбора
             if self.current_node.get('choices'):
                 if event.key == pygame.K_UP:
                     self.selected_choice = (self.selected_choice - 1) % len(self.current_node['choices'])
@@ -58,29 +61,24 @@ class DialogueManager:
                         self.current_node = self.nodes[next_node]
                         self.selected_choice = 0
             else:
-                # Если вариантов нет – нажатие любой клавиши завершает диалог
                 if event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
                     self.active = False
 
     def draw(self):
-        """Отрисовывает диалоговое окно."""
+        """
+        
+        """
         if not self.active:
             return
-
-        # Создаём поверхность с прозрачностью
         surf = pygame.Surface((self.window_width, self.window_height), pygame.SRCALPHA)
         surf.fill(self.bg_color)
         pygame.draw.rect(surf, self.border_color, surf.get_rect(), 2)
-
-        # Текст
         text_lines = self._wrap_text(self.current_node['text'], self.font, self.window_width - 40)
         y = 20
         for line in text_lines:
             text_surf = self.font.render(line, True, self.text_color)
             surf.blit(text_surf, (20, y))
             y += self.font.get_height() + 2
-
-        # Варианты выбора
         if self.current_node.get('choices'):
             y += 20
             for i, choice in enumerate(self.current_node['choices']):
@@ -89,14 +87,14 @@ class DialogueManager:
                 surf.blit(choice_surf, (40, y))
                 y += self.font.get_height() + 5
         else:
-            # Подсказка для продолжения
             hint_surf = self.font.render("Нажмите ENTER или SPACE", True, (150, 150, 150))
             surf.blit(hint_surf, (20, self.window_height - 40))
-
         self.screen.blit(surf, self.rect)
 
     def _wrap_text(self, text, font, max_width):
-        """Разбивает текст на строки по ширине."""
+        """
+        
+        """
         words = text.split(' ')
         lines = []
         current_line = []
@@ -109,7 +107,6 @@ class DialogueManager:
                     lines.append(' '.join(current_line))
                     current_line = [word]
                 else:
-                    # Слово длиннее max_width – принудительно разбиваем
                     for i in range(0, len(word), max_width // font.size('W')[0]):
                         lines.append(word[i:i + max_width // font.size('W')[0]])
                     current_line = []
