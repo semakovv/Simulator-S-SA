@@ -102,6 +102,7 @@ while run:
     # print(gameEvent)
     # print(gameState)
     # print(volume)
+    print(f"{frame} кадров в секунду\nзадержка 0 секунд")
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
