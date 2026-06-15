@@ -2,6 +2,7 @@ import pygame
 import button
 import settings
 import console
+import dialog_parser
 
 pygame.init()
 
@@ -93,6 +94,8 @@ run = True
 terminal = console.сli()
 gameState = "menu"
 gameEvent = "desktop"
+dialog = dialog_parser.DialogueManager(window)
+dialog.load_dialogue("data/dialogs.json")
 
 while run:
     clock.tick(frame)
@@ -102,24 +105,36 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if dialog.active:
+            dialog.handle_event(event)   
+        else:
+            if gameState == "game":
+                dialog.start("stage1")
         if gameState == "menu":
             gameState = redraw.menu()
-        elif gameState == "game":
+        if gameState == "game":
             gameState = redraw.game()
+            pygame.draw.rect(window, (255, 255, 255),
+                 (terminal.consoleRect_x, terminal.consoleRect_y,
+                  terminal.consoleWidth, terminal.consoleHeight), 3)
+            if dialog.active:
+                dialog.draw()
             if gameEvent == "desktop":
                 if cliItem.press(window):
                     gameEvent = "cli"
+            else:
+                if closeItem.press(window):
+                    gameEvent = "desktop"
             if gameEvent == "cli":
                 terminal.inputCLI(event)
                 terminal.outputCLI(window)
-                if closeItem.press(window):
-                    gameEvent = "desktop"
-        elif gameState == "setting":
+        if gameState == "setting":
             gameState = redraw.setting()
-        elif gameState == "exit":
+        if gameState == "exit":
             run = False
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
         run = False
     pygame.display.update()
+    
 pygame.quit()

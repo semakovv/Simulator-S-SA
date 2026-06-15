@@ -20,7 +20,7 @@ class сli():
         self.fontRect_y = 0
         self.fontRect = (self.fontRect_x, self.fontRect_y)
         self.font = pygame.font.SysFont('monospace', self.fontSize)
-        self.history = deque()
+        self.history = []
         self.consoleWidth = 800
         self.consoleHeight = 600
         self.console = pygame.Surface((self.consoleWidth, self.consoleHeight))
@@ -37,7 +37,7 @@ class сli():
             if event.key == pygame.K_RETURN:
                 print("Введено:", self.inputClient)
                 self.history.append(self.inputClient)
-                self.commands(self.inputClient)
+                self._commands(self.inputClient)
                 self.inputClient = ""
             elif event.key == pygame.K_BACKSPACE:
                 self.inputClient = self.inputClient[:-1]
@@ -45,16 +45,16 @@ class сli():
                 if event.unicode.isprintable():
                     self.inputClient += event.unicode
     
-    def commands(self, command):
+    def _commands(self, command):
         """
         
         """
         command = command.split(" ")
 
         if command[0] == "help":
-            self.history.append("ip")
+            self.inputClient = "ip"
         else:
-            self.history.append("Error")
+            self.inputClient = "Error"
 
     def outputCLI(self, surface):
         """
