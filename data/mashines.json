@@ -1,0 +1,146 @@
+{
+    "stage1": {
+        "mashines": {
+            "PC-ADM": {
+                "type": "PC",
+                "config": {
+                    "eth0": [
+                        {
+                            "ip": "10.1.1.2/25"
+                        },
+                        {
+                            "routes": [
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            },
+            "PRN-ADM": {
+                "type": "PRN",
+                "config": {
+                    "eth0": [
+                        {
+                            "ip": "10.1.1.3/25"
+                        },
+                        {
+                            "routes": [
+                                "ip add route 10.1.1.254"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "SW-ADM": {
+                "type": "SW",
+                "config": [
+                    {
+                        "ip": "10.1.1.253/25"
+                    },
+                    {
+                        "routes": [
+                            "ip add route 10.1.1.0/25"
+                        ]
+                    }
+                ]
+            },
+            "RT-ADM": {
+                "type": "RT",
+                "config": {
+                    "eth0": [
+                        {
+                            "ip": "10.1.1.254/25"
+                        },
+                        {
+                            "routes": [
+                                "ip add route 10.1.1.253"
+                            ]
+                        }
+                    ],
+                    "eth1": [
+                        {
+                            "ip": "20.2.2.254/25"
+                        },
+                        {
+                            "routes": [
+                                "ip add route 20.2.2.253"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "stage2": {
+        "mashines": {
+            "PC-ADM": {
+                "type": "PC",
+                "config": {
+                    "eth0": [
+                        {
+                            "ip": "10.1.1.2/25"
+                        },
+                        {
+                            "routes": [
+                                "ip add route 10.1.1.254"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "PRN-ADM": {
+                "type": "PRN",
+                "config": {
+                    "eth0": [
+                        {
+                            "ip": "10.1.1.3/25"
+                        },
+                        {
+                            "routes": [
+                                "ip add route 10.1.1.254"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "SW-ADM": {
+                "type": "SW",
+                "config": [
+                    {
+                        "ip": "10.1.1.253/25"
+                    },
+                    {
+                        "routes": [
+                            "ip add route 10.1.1.0/25"
+                        ]
+                    }
+                ]
+            },
+            "RT-ADM": {
+                "type": "RT",
+                "config": {
+                    "eth0": [
+                        {
+                            "ip": "10.1.1.254/25"
+                        },
+                        {
+                            "routes": [
+                                "ip add route 10.1.1.253"
+                            ]
+                        }
+                    ],
+                    "eth1": [
+                        {
+                            "ip": "20.2.2.254/25"
+                        },
+                        {
+                            "routes": [
+                                "ip add route 20.2.2.253"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

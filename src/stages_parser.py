@@ -1,8 +1,14 @@
 import pygame
 import json
 
-class DialogueManager:
+class dialogueManager:
+    """
+    
+    """
     def __init__(self, screen, font=None):
+        """
+        
+        """
         self.screen = screen
         self.font = font or pygame.font.Font(None, 36)
         self.active = False
@@ -21,7 +27,7 @@ class DialogueManager:
         self.rect = pygame.Rect(0, 0, self.window_width, self.window_height)
         self.rect.center = (screen.get_width() // 2, screen.get_height() // 2)
 
-    def load_dialogue(self, json_path):
+    def loadDialogue(self, json_path):
         """
         
         """
@@ -39,7 +45,7 @@ class DialogueManager:
         else:
             print(f"Ошибка: узел {start_node} не найден")
 
-    def handle_event(self, event):
+    def handleEvent(self, event):
         """
         
         """
@@ -91,7 +97,7 @@ class DialogueManager:
             surf.blit(hint_surf, (20, self.window_height - 40))
         self.screen.blit(surf, self.rect)
 
-    def _wrap_text(self, text, font, max_width):
+    def _wrapText(self, text, font, max_width):
         """
         
         """
