@@ -8,7 +8,7 @@ class saveManager():
         """
         
         """
-        self.stage = "end"
+        self.stage = "stage1"
         self.jsonPath = "saves/save.json"
     
     def loadSave(self):
