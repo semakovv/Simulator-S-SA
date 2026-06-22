@@ -1,7 +1,7 @@
 import pygame
 
-movingButtonImage = pygame.image.load("assets/images/movingButton.png")
-holdingButtonImage = pygame.image.load("assets/images/holdingButton.png")
+movingButtonImage = pygame.image.load("assets/images/buttons/movingButton.png")
+holdingButtonImage = pygame.image.load("assets/images/buttons/holdingButton.png")
 
 #button class
 class link():

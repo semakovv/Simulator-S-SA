@@ -12,6 +12,7 @@ volume = gameSettings.getVolume()
 frameButton = button.link(600, 600)
 frame = gameSettings.getFrame()
 resolution = gameSettings.getResolution()
+
 window = pygame.display.set_mode(resolution)
 pygame.display.set_caption("Simulator S&SA DEMO")
 backGround = pygame.image.load("assets/images/backgrounds/backGround.jpg")
@@ -19,19 +20,17 @@ backGround = pygame.image.load("assets/images/backgrounds/backGround.jpg")
 
 clock = pygame.time.Clock()
 
-startButtonImage = pygame.image.load("assets/images/buttons/startButton.png")
-menuButtonImage = pygame.image.load("assets/images/buttons/menuButton.jpg")
-settingsButtonImage = pygame.image.load("assets/images/buttons/settingsButton.jpeg")
-exitButtonImage = pygame.image.load("assets/images/buttons/exitButton.png")
-startButton = button.link(600, 400, startButtonImage)
-menuButton = button.link(1800, 0, menuButtonImage)
-settingsButton = button.link(1800, 0, settingsButtonImage)
-exitButton = button.link(1000, 400, exitButtonImage)
+soundMenu = pygame.mixer.Sound("assets/sounds/soundMenu.mp3")
+soundGame = pygame.mixer.Sound("assets/sounds/soundGame.mp3")
 
-# soundMenu = pygame.mixer.Sound("assets/sounds/soundMenu.mp3")
-# soundGame = pygame.mixer.Sound("assets/sounds/soundGame.mp3")
-soundGame = pygame.mixer.music.load("assets/sounds/soundGame.mp3")
-pygame.mixer.music.play(-1)
+startButtonImage = pygame.image.load("assets/images/buttons/startButton.png")
+startButton = button.link(600, 400, startButtonImage)
+menuButtonImage = pygame.image.load("assets/images/buttons/menuButton.jpg")
+menuButton = button.link(1800, 0, menuButtonImage)
+settingsButtonImage = pygame.image.load("assets/images/buttons/settingsButton.jpeg")
+settingsButton = button.link(1800, 0, settingsButtonImage)
+exitButtonImage = pygame.image.load("assets/images/buttons/exitButton.png")
+exitButton = button.link(1000, 400, exitButtonImage)
 
 cliItemImage = pygame.image.load("assets/images/items/cliItem.jpg")
 cliItem = button.link(560, 240, cliItemImage)
@@ -47,9 +46,6 @@ class redraw():
         
         """
         window.blit(backGround, (0, 0))
-        # window.fill((255, 255, 255))
-        # soundGame.stop()
-        # soundMenu.play(-1)
         if startButton.press(window):
             return "game"
         if settingsButton.press(window):
@@ -63,9 +59,6 @@ class redraw():
         
         """
         window.blit(backGround, (0, 0))
-        # window.fill((255, 255, 255))
-        # soundMenu.stop()
-        # soundGame.play(-1)
         if menuButton.press(window):
             return "menu"
         return "game"
@@ -76,16 +69,12 @@ class redraw():
         """
         global gameSettings, volume, frame
         window.blit(backGround, (0, 0))
-        # window.fill((255, 255, 255))
         volumeProcent = volumeButton.move(window, "volume")
         frameProcent = frameButton.move(window, "frame")
         gameSettings.setVolume(volumeProcent)
         gameSettings.setFrame(frameProcent)
         volume = gameSettings.getVolume()
         frame = gameSettings.getFrame()
-        pygame.mixer.music.set_volume(volume)
-        # soundMenu.set_volume(volume)
-        # soundGame.set_volume(volume)
         if menuButton.press(window):
             return "menu"
         return "setting"
@@ -93,30 +82,30 @@ class redraw():
 run = True
 terminal = cmd_parser.сli()
 gameState = "menu"
+gameMusic = ""
 gameEvent = "desktop"
 stage = stages_parser.dialogueManager(window)
-stage.loadDialogue("data/dialogs.json")
+stage.loadDialogue("data/stages.json")
 
 while run:
     clock.tick(frame)
     # print(gameEvent)
     # print(gameState)
-    # print(volume)
     # print(f"{frame} кадров в секунду\nзадержка 0 секунд")
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+
         if stage.active:
-            stage.handle_event(event)   
+            stage.handleEvent(event)
         else:
             if gameState == "game":
                 stage.start("stage1")
+
         if gameState == "menu":
             gameState = redraw.menu()
-        if gameState == "game":
+        elif gameState == "game":
             gameState = redraw.game()
-            pygame.draw.rect(window, (255, 255, 255), (terminal.consoleRect_x, terminal.consoleRect_y,
-                  terminal.consoleWidth, terminal.consoleHeight), 3)
             if stage.active:
                 stage.draw()
             if gameEvent == "desktop":
@@ -128,10 +117,22 @@ while run:
             if gameEvent == "cli":
                 terminal.inputCLI(event)
                 terminal.outputCLI(window)
-        if gameState == "setting":
+        elif gameState == "setting":
             gameState = redraw.setting()
-        if gameState == "exit":
+            soundMenu.set_volume(volume)
+            soundGame.set_volume(volume)
+        elif gameState == "exit":
             run = False
+
+        if gameState != gameMusic:
+            gameMusic = gameState
+            if gameMusic == "menu":
+                pygame.mixer.stop()
+                soundMenu.play(-1)
+            elif gameMusic == "game":
+                pygame.mixer.stop()
+                soundGame.play(-1)
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
         run = False

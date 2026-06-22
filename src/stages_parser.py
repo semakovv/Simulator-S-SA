@@ -79,7 +79,7 @@ class dialogueManager:
         surf = pygame.Surface((self.window_width, self.window_height), pygame.SRCALPHA)
         surf.fill(self.bg_color)
         pygame.draw.rect(surf, self.border_color, surf.get_rect(), 2)
-        text_lines = self._wrap_text(self.current_node['text'], self.font, self.window_width - 40)
+        text_lines = self._wrapText(self.current_node['text'], self.font, self.window_width - 40)
         y = 20
         for line in text_lines:
             text_surf = self.font.render(line, True, self.text_color)
