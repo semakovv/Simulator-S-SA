@@ -57,7 +57,7 @@ class dialogueManager:
                     self.selected_choice = (self.selected_choice - 1) % len(self.current_node['choices'])
                 elif event.key == pygame.K_DOWN:
                     self.selected_choice = (self.selected_choice + 1) % len(self.current_node['choices'])
-                elif event.key == pygame.K_RETURN:
+                elif event.key == pygame.K_RIGHT:
                     # Переход к следующему узлу
                     choice = self.current_node['choices'][self.selected_choice]
                     next_node = choice.get('next_node')

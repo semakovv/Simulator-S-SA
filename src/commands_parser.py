@@ -1,15 +1,8 @@
 import pygame
-import os
-from collections import deque 
+import json
+import saves_parser as sp
 
-class machines():
-    """
-    
-    """
-    def __init__(self, name):
-        self.name = name
-
-class сli():
+class cli():
     """
     
     """
@@ -28,7 +21,14 @@ class сli():
         self.consoleRect_x = 460
         self.consoleRect_y = 140
         self.consoleRect = (self.consoleRect_x, self.consoleRect_y)
-        # self.name = os.path.basename(os.getcwd())
+        self.json_path = "data/mashines.json"
+        self.nodes = {}
+        self.stage = sp.saveManager().downloadSave()
+        
+        with open(self.json_path, 'r', encoding='utf-8') as f:
+            self.nodes = json.load(f)
+        
+
 
     def inputCLI(self, event):
         """
@@ -36,10 +36,10 @@ class сli():
         """
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                print("Введено:", self.inputClient)
+                # print("Введено:", self.inputClient)
                 self.history.append(self.inputClient)
                 self.lines.append("> " + self.inputClient)
-                result = self._commands(self.inputClient)
+                result = self._commandsForPC(self.inputClient)
                 if result:
                     self.lines.append(result)
                 self.inputClient = ""
@@ -49,16 +49,21 @@ class сli():
                 if event.unicode.isprintable():
                     self.inputClient += event.unicode
     
-    def _commands(self, command):
+    def _commandsForPC(self, command):
         """
         
         """
         parts = command.split(" ")
+        ipAddress = self.stage
         if not parts:
             return
         command = parts[0]
-        if command == "help":
+        if command == "":
+            self.lines.append("")
+        elif command == "help":
             self.lines.append("help clear ip ping")
+        elif command == "ip" and parts[1] == "add" and parts[2] == "address" and len(parts) >= 3:
+            self.lines.append("")
         elif command == "ip" and parts[1] == "add" and parts[2] == "route" and len(parts) >= 3:
             self.lines.append("")
         elif command == "ping" and parts[1] != "" and len(parts) == 2:
@@ -67,27 +72,25 @@ class сli():
         elif command == "clear":
             self.lines.clear()
         else:
-            self.lines.append(f"Error {command}")
+            return f"Error {command}"
 
     def outputCLI(self, surface):
         """
         
         """
-        y = 10
+        input_y = 0
         self.console.fill((0, 0, 0))
-        for line in self.lines[-20:]:
+        for line in self.lines[-38:]:
             text = self.font.render(line, True, (255, 255, 255))
-            self.console.blit(text, (0, y))
-            y += self.fontSize + 2
-        # text = self.font.render(">" + self.inputClient + "_", True, (255, 255, 255))
-        # self.console.blit(text, self.fontRect)
-        # self.fontRect_y += self.fontSize
+            self.console.blit(text, (0, input_y))
+            input_y += self.fontSize
+        
+
         input_display = "> " + self.inputClient + "_"
         input_surf = self.font.render(input_display, True, (255, 255, 255))
-        input_y = self.consoleHeight - self.fontSize - 10
-        self.console.blit(input_surf, (10, input_y))
+        self.console.blit(input_surf, (0, input_y))
         surface.blit(self.console, self.consoleRect)
-        # surface.blit(self.console, self.consoleRect)
+
 
 
 

@@ -1,88 +1,172 @@
 {
     "stage1": {
+        "name": "stage1",
+        "result": "False",
         "mashines": {
-            "PC-ADM":{
+            "PC-ADM": {
                 "type": "PC",
-                "config": {
-                "eth0": [
-                        {"ip": "10.1.1.2/25"},
-                        {"routes": [""]}
-                    ]
-                }
-            },
-            "PRN-ADM":{
-                "type": "PRN",
-                "config": {
-                    "eth0": [
-                        {"ip": "10.1.1.3/25"},
-                        {"routes": ["ip add route 10.1.1.254"]}
-                    ]
-                }
-            },
-            "SW-ADM":{
-                "type": "SW",
                 "config": [
-                    {"ip": "10.1.1.253/25"},
-                    {"routes": ["ip add route 10.1.1.0/25"]}
+                    {
+                        "eth0": {
+                            "ip": "10.1.1.2/25"
+                        }
+                    },
+                    {
+                        "routes": []
+                    }
                 ]
             },
-            "RT-ADM":{
+            "PC-BOSS": {
+                "type": "PC",
+                "config": [
+                    {
+                        "eth0": {
+                            "ip": "10.1.1.2/25"
+                        }
+                    },
+                    {
+                        "routes": [
+                            "ip route 10.1.1.254"
+                        ]
+                    }
+                ]
+            },
+            "PRN-BOSS": {
+                "type": "PRN",
+                "config": [
+                    {
+                        "eth0": {
+                            "ip": "10.1.1.3/25"
+                        }
+                    },
+                    {
+                        "routes": []
+                    }
+                ]
+            },
+            "SW-ADM": {
+                "type": "SW",
+                "config": [
+                    {
+                        "eth0": {
+                            "ip": "10.1.1.253/25"
+                        }
+                    },
+                    {
+                        "routes": [
+                            "ip route 10.1.1.0"
+                        ]
+                    }
+                ]
+            },
+            "RT-ADM": {
                 "type": "RT",
-                "config": {
-                "eth0": [
-                        {"ip": "10.1.1.254/25"},
-                        {"routes": ["ip add route 10.1.1.253"]}
-                    ],
-                "eth1": [
-                        {"ip": "20.2.2.254/25"},
-                        {"routes": ["ip add route 20.2.2.253"]}
-                    ]
-                }
+                "config": [
+                    {
+                        "eth0": {
+                            "ip": "10.1.1.254/25"
+                        }
+                    },
+                    {
+                        "eth1": {
+                            "ip": "20.2.2.254/25"
+                        }
+                    },
+                    {
+                        "routes": [
+                            "ip route 10.1.1.253",
+                            "ip route 20.2.2.253"
+                        ]
+                    }
+                ]
             }
-
         }
     },
     "stage2": {
+        "name": "stage2",
+        "result": "False",
         "mashines": {
-            "PC-ADM":{
+            "PC-ADM": {
                 "type": "PC",
-                "config": {
-                "eth0": [
-                        {"ip": "10.1.1.2/25"},
-                        {"routes": ["ip add route 10.1.1.254"]}
-                    ]
-                }
-            },
-            "PRN-ADM":{
-                "type": "PRN",
-                "config": {
-                    "eth0": [
-                        {"ip": "10.1.1.3/25"},
-                        {"routes": ["ip add route 10.1.1.254"]}
-                    ]
-                }
-            },
-            "SW-ADM":{
-                "type": "SW",
                 "config": [
-                    {"ip": "10.1.1.253/25"},
-                    {"routes": ["ip add route 10.1.1.0/25"]}
+                    {
+                        "eth0": {
+                            "ip": "10.1.1.2/25"
+                        }
+                    },
+                    {
+                        "routes": []
+                    }
                 ]
             },
-            "RT-ADM":{
+            "PC-BOSS": {
+                "type": "PC",
+                "config": [
+                    {
+                        "eth0": {
+                            "ip": "10.1.1.2/25"
+                        }
+                    },
+                    {
+                        "routes": [
+                            "ip route 10.1.1.254"
+                        ]
+                    }
+                ]
+            },
+            "PRN-BOSS": {
+                "type": "PRN",
+                "config": [
+                    {
+                        "eth0": {
+                            "ip": "10.1.1.3/25"
+                        }
+                    },
+                    {
+                        "routes": []
+                    }
+                ]
+            },
+            "SW-ADM": {
+                "type": "SW",
+                "config": [
+                    {
+                        "eth0": {
+                            "ip": "10.1.1.253/25"
+                        }
+                    },
+                    {
+                        "routes": [
+                            "ip route 10.1.1.0"
+                        ]
+                    }
+                ]
+            },
+            "RT-ADM": {
                 "type": "RT",
-                "config": {
-                "eth0": [
-                        {"ip": "10.1.1.254/25"},
-                        {"routes": ["ip add route 10.1.1.253"]}
-                    ],
-                "eth1": [
-                        {"ip": "20.2.2.254/25"},
-                        {"routes": ["ip add route 20.2.2.253"]}
-                    ]
-                }
+                "config": [
+                    {
+                        "eth0": {
+                            "ip": "10.1.1.254/25"
+                        }
+                    },
+                    {
+                        "eth1": {
+                            "ip": "20.2.2.254/25"
+                        }
+                    },
+                    {
+                        "routes": [
+                            "ip route 10.1.1.253",
+                            "ip route 20.2.2.253"
+                        ]
+                    }
+                ]
             }
-
         }
+    },
+    "stage3": {
+        "name": "stage3",
+        "result": "End"
     }
 }

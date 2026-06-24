@@ -1,8 +1,9 @@
 import pygame
 import button
 import settings
-import cmd_parser
+import commands_parser
 import stages_parser
+import saves_parser
 
 pygame.init()
 
@@ -80,7 +81,7 @@ class redraw():
         return "setting"
 
 run = True
-terminal = cmd_parser.сli()
+terminal = commands_parser.сli()
 gameState = "menu"
 gameMusic = ""
 gameEvent = "desktop"

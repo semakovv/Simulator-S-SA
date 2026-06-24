@@ -38,7 +38,6 @@ class link():
 			else:
 				self.frontRectCollide = False
 				return self.frontRectCollide
-		# print(self.frontRectCollide)	
 
 	def press(self, surface):
 		"""
