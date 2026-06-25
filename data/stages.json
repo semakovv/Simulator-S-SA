@@ -2,16 +2,104 @@
     "stage1": {
         "name": "stage1",
         "result": "False",
-        "text": "Вы заходите в серверную комнату. На экране монитора красная ошибка: 'CPU перегрев'.",
+        "speaker": "Вениамин",
+        "text": "Захожу в комнату. Компьютер не включается...",
         "choices": [
-            {"text": "Перезагрузить систему управления охлаждением", "next_node": "reboot_cooling"},
-            {"text": "Вызвать электрика", "next_node": "call_electrician"},
-            {"text": "Проигнорировать и уйти", "next_node": "ignore"}
+            {
+                "text": "Проверить кабель питания",
+                "next_node": "check_cable"
+            },
+            {
+                "text": "Проверить кнопку включения",
+                "next_node": "check_button"
+            },
+            {
+                "text": "Вызвать специалиста",
+                "next_node": "call_specialist"
+            }
         ]
+    },
+    "check_cable": {
+        "speaker": "Вениамин",
+        "text": "Кабель подключён, но ничего не происходит.",
+        "choices": [
+            {
+                "text": "Проверить блок питания",
+                "next_node": "check_psu"
+            },
+            {
+                "text": "Вернуться назад",
+                "next_node": "stage1"
+            }
+        ]
+    },
+    "check_button": {
+        "speaker": "Вениамин",
+        "text": "Кнопка нажимается, но система молчит.",
+        "choices": [
+            {
+                "text": "Проверить блок питания",
+                "next_node": "check_psu"
+            }
+        ]
+    },
+    "call_specialist": {
+        "speaker": "Вениамин",
+        "text": "Специалист сказал: «Проверь блок питания».",
+        "choices": [
+            {
+                "text": "Проверить блок питания",
+                "next_node": "check_psu"
+            }
+        ]
+    },
+    "check_psu": {
+        "speaker": "Вениамин",
+        "text": "Ага! Блок питания выключен. Включаю тумблер...",
+        "choices": [
+            {
+                "text": "Включить блок питания",
+                "next_node": "psu_on"
+            }
+        ]
+    },
+    "psu_on": {
+        "speaker": "Вениамин",
+        "text": "Компьютер запустился! Всё работает!",
+        "success": true,
+        "choices": []
     },
     "stage2": {
         "name": "stage2",
-        "result": "False"
+        "result": "False",
+        "speaker": "Роберт",
+        "text": "Вениамин, у меня принтер не печатает.",
+        "next_node": "stage2_2"
+    },
+    "stage2_2": {
+        "speaker": "Вениамин",
+        "text": "Что именно не работает?",
+        "next_node": "stage2_3"
+    },
+    "stage2_3": {
+        "speaker": "Роберт",
+        "text": "Я проверил всё: кабели, бумагу, картриджи — всё в порядке. Но он молчит.",
+        "next_node": "stage2_4"
+    },
+    "stage2_4": {
+        "speaker": "Вениамин",
+        "text": "Хорошо, я посмотрю. Подойди к терминалу и проверь настройки сети.",
+        "next_node": "stage2_5"
+    },
+    "stage2_5": {
+        "speaker": "Роберт",
+        "text": "Спасибо, Вениамин! Я попробую.",
+        "next_node": "stage2_6"
+    },
+    "stage2_6": {
+        "speaker": "Система",
+        "text": "Вы открываете терминал и начинаете диагностику.",
+        "success": true
     },
     "stage3": {
         "name": "stage3",

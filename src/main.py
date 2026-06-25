@@ -36,7 +36,7 @@ exitButton = button.link(1000, 400, exitButtonImage)
 cliItemImage = pygame.image.load("assets/images/items/cliItem.jpg")
 cliItem = button.link(560, 240, cliItemImage)
 closeItemImage = pygame.image.load("assets/images/items/closeItem.png")
-closeItem = button.link(1360, 240, closeItemImage)
+closeItem = button.link(1460, 140, closeItemImage)
 
 class redraw():
     """
@@ -81,12 +81,13 @@ class redraw():
         return "setting"
 
 run = True
-terminal = commands_parser.сli()
+terminal = commands_parser.cli("PC-ADM")
 gameState = "menu"
 gameMusic = ""
 gameEvent = "desktop"
 stage = stages_parser.dialogueManager(window)
 stage.loadDialogue("data/stages.json")
+save = saves_parser.saveManager()
 
 while run:
     clock.tick(frame)
@@ -101,7 +102,7 @@ while run:
             stage.handleEvent(event)
         else:
             if gameState == "game":
-                stage.start("stage1")
+                stage.start(save.downloadSave())
 
         if gameState == "menu":
             gameState = redraw.menu()
@@ -109,6 +110,12 @@ while run:
             gameState = redraw.game()
             if stage.active:
                 stage.draw()
+            else:
+                if not stage.active and stage.result:
+                    stage.save_result("data/stages.json")
+                    print("Глава завершена, result обновлён!")
+                    stage.result = False
+
             if gameEvent == "desktop":
                 if cliItem.press(window):
                     gameEvent = "cli"
@@ -134,9 +141,6 @@ while run:
                 pygame.mixer.stop()
                 soundGame.play(-1)
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_ESCAPE]:
-        run = False
     pygame.display.update()
     
 pygame.quit()

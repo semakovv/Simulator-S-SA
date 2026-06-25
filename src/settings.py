@@ -8,7 +8,7 @@ class parameters():
             
             """
             self.frame = 60
-            self.volume = 0.1
+            self.volume = 0.0
             self.resolution = (1920, 1080)
 
         def getFrame(self):
