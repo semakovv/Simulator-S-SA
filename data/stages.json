@@ -1,7 +1,7 @@
 {
     "stage1": {
         "name": "stage1",
-        "result": "False",
+        "result": "True",
         "speaker": "Вениамин",
         "text": "Захожу в комнату. Компьютер не включается...",
         "choices": [

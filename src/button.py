@@ -59,19 +59,16 @@ class link():
 		"""
 		
 		"""
-		buttonCollide = self.collide()
+		mousePress = self.press(surface)
 		mousePosition = pygame.mouse.get_pos()
-		mousePress = pygame.mouse.get_pressed()
 		min_x = self.backRect.x
 		max_x = self.backRect.x + self.backRect.width - self.frontWidth
-		if mousePress[0] == 1 and buttonCollide and not(self.clicked):
-			self.clicked = True
-			# print(self.clicked)
+		if mousePress:
 			self.offset = mousePosition[0] - self.frontRect.x
 		if self.clicked:
 			self.frontRect.x = mousePosition[0] - self.offset
 			self.frontRect.x = max(min_x, min(self.frontRect.x, max_x))
-		if mousePress[0] == 0:
+		else:
 			self.clicked = False
 		procent = (self.frontRect.x - self.backRect.x) // 10
 		surface.blit(self.backImage, self.backRect)

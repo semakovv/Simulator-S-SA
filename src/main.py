@@ -9,9 +9,7 @@ pygame.init()
 
 gameSettings = settings.parameters()
 volumeButton = button.link(600, 400)
-volume = gameSettings.getVolume()
 frameButton = button.link(600, 600)
-frame = gameSettings.getFrame()
 resolution = gameSettings.getResolution()
 
 window = pygame.display.set_mode(resolution)
@@ -68,14 +66,14 @@ class redraw():
         """
         
         """
-        global gameSettings, volume, frame
         window.blit(backGround, (0, 0))
         volumeProcent = volumeButton.move(window, "volume")
         frameProcent = frameButton.move(window, "frame")
         gameSettings.setVolume(volumeProcent)
         gameSettings.setFrame(frameProcent)
         volume = gameSettings.getVolume()
-        frame = gameSettings.getFrame()
+        soundMenu.set_volume(volume)
+        soundGame.set_volume(volume)
         if menuButton.press(window):
             return "menu"
         return "setting"
@@ -84,7 +82,8 @@ run = True
 terminal = commands_parser.cli("PC-ADM")
 gameState = "menu"
 gameMusic = ""
-gameEvent = "desktop"
+gameEvent = "dialog"
+frame = gameSettings.getFrame()
 stage = stages_parser.dialogueManager(window)
 stage.loadDialogue("data/stages.json")
 save = saves_parser.saveManager()
@@ -108,15 +107,15 @@ while run:
             gameState = redraw.menu()
         elif gameState == "game":
             gameState = redraw.game()
-            if stage.active:
-                stage.draw()
-            else:
-                if not stage.active and stage.result:
-                    stage.save_result("data/stages.json")
-                    print("Глава завершена, result обновлён!")
-                    stage.result = False
-
-            if gameEvent == "desktop":
+            if gameEvent == "dialog":
+                if stage.active:
+                    stage.draw()
+                else:
+                    if not stage.active and stage.result:
+                        stage.save_result("data/stages.json")
+                        print("Глава завершена, result обновлён!")
+                        stage.result = False
+            elif gameEvent == "desktop":
                 if cliItem.press(window):
                     gameEvent = "cli"
             else:
@@ -127,8 +126,6 @@ while run:
                 terminal.outputCLI(window)
         elif gameState == "setting":
             gameState = redraw.setting()
-            soundMenu.set_volume(volume)
-            soundGame.set_volume(volume)
         elif gameState == "exit":
             run = False
 
