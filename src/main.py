@@ -10,9 +10,8 @@ pygame.init()
 gameSettings = settings.parameters()
 volumeButton = button.link(600, 400)
 frameButton = button.link(600, 600)
-resolution = gameSettings.getResolution()
 
-window = pygame.display.set_mode(resolution)
+window = pygame.display.set_mode((1920, 1080))
 pygame.display.set_caption("Simulator S&SA DEMO")
 backGround = pygame.image.load("assets/images/backgrounds/backGround.jpg")
 # pygame.display.set_icon("")
@@ -58,8 +57,8 @@ class redraw():
         
         """
         window.blit(backGround, (0, 0))
-        if menuButton.press(window):
-            return "menu"
+        if settingsButton.press(window):
+            return "setting"
         return "game"
     
     def setting():
@@ -82,7 +81,7 @@ run = True
 terminal = commands_parser.cli("PC-ADM")
 gameState = "menu"
 gameMusic = ""
-gameEvent = "dialog"
+gameEvent = "desktop"
 frame = gameSettings.getFrame()
 stage = stages_parser.dialogueManager(window)
 stage.loadDialogue("data/stages.json")
@@ -115,7 +114,7 @@ while run:
                         stage.save_result("data/stages.json")
                         print("Глава завершена, result обновлён!")
                         stage.result = False
-            elif gameEvent == "desktop":
+            if gameEvent == "desktop":
                 if cliItem.press(window):
                     gameEvent = "cli"
             else:

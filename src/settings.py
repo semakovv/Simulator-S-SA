@@ -9,7 +9,6 @@ class parameters():
             """
             self.frame = 60
             self.volume = 0.0
-            self.resolution = (1920, 1080)
 
         def getFrame(self):
             """
@@ -22,12 +21,6 @@ class parameters():
             
             """
             return self.volume
-        
-        def getResolution(self):
-            """
-            
-            """
-            return self.resolution
 
         def setFrame(self, procent):
             """
@@ -42,15 +35,6 @@ class parameters():
             """
             self.volume = procent / 100.0
             return self.volume
-        
-        def setResolution(self):
-            """
-            
-            """
-            if self.resolution == (1920, 1080):
-                self.resolution = (1920, 1080)
-            return self.resolution
-
 
 
     
