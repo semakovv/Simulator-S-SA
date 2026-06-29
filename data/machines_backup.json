@@ -1,10 +1,6 @@
 {
     "stage1": {
-        "name": "stage2",
-        "result": "False"
-    },
-    "stage2": {
-        "name": "stage2",
+        "name": "stage1",
         "result": "False",
         "machines": {
             "PC-ADM": {
@@ -47,15 +43,27 @@
                     ]
                 }
             },
+            "SW-BOSS": {
+                "name": "SW-ADM",
+                "type": "SW",
+                "config": {
+                    "vl0": [
+                        "20.2.2.253/25"
+                    ],
+                    "routes": [
+                        "20.2.2.0/25"
+                    ]
+                }
+            },
             "PC-BOSS": {
                 "name": "PC-BOSS",
                 "type": "PC",
                 "config": {
                     "eth0": [
-                        "10.1.1.1/25"
+                        "20.2.2.1/25"
                     ],
                     "routes": [
-                        "10.1.1.253/25"
+                        "20.2.2.253/25"
                     ]
                 }
             },
@@ -64,10 +72,91 @@
                 "type": "PRN",
                 "config": {
                     "eth0": [
-                        "10.1.1.3/25"
+                        "20.2.2.3/25"
+                    ],
+                    "routes": [
+                        "20.2.2.253/25"
+                    ]
+                }
+            }
+        }
+    },
+    "stage2": {
+        "name": "stage2",
+        "result": "False",
+        "machines": {
+            "PC-ADM": {
+                "name": "PC-ADM",
+                "type": "PC",
+                "config": {
+                    "eth0": [
+                        "10.1.1.2/25"
                     ],
                     "routes": [
                         ""
+                    ]
+                }
+            },
+            "SW-ADM": {
+                "name": "SW-ADM",
+                "type": "SW",
+                "config": {
+                    "vl0": [
+                        "10.1.1.253/25"
+                    ],
+                    "routes": [
+                        "10.1.1.0/25"
+                    ]
+                }
+            },
+            "RT-ADM": {
+                "name": "RT-ADM",
+                "type": "RT",
+                "config": {
+                    "eth0": [
+                        "10.1.1.254/25"
+                    ],
+                    "eth1": [
+                        "20.2.2.254/25"
+                    ],
+                    "routes": [
+                        "10.1.1.253/25"
+                    ]
+                }
+            },
+            "SW-BOSS": {
+                "name": "SW-ADM",
+                "type": "SW",
+                "config": {
+                    "vl0": [
+                        "20.2.2.253/25"
+                    ],
+                    "routes": [
+                        "20.2.2.0/25"
+                    ]
+                }
+            },
+            "PC-BOSS": {
+                "name": "PC-BOSS",
+                "type": "PC",
+                "config": {
+                    "eth0": [
+                        "20.2.2.1/25"
+                    ],
+                    "routes": [
+                        "20.2.2.253/25"
+                    ]
+                }
+            },
+            "PRN-BOSS": {
+                "name": "PRN-BOSS",
+                "type": "PRN",
+                "config": {
+                    "eth0": [
+                        "20.2.2.3/25"
+                    ],
+                    "routes": [
+                        "20.2.2.253/25"
                     ]
                 }
             }
