@@ -1,7 +1,7 @@
 {
     "stage1": {
         "name": "stage1",
-        "result": "True",
+        "result": "False",
         "speaker": "Вениамин",
         "text": "Захожу в комнату. Компьютер не включается...",
         "choices": [
@@ -66,7 +66,7 @@
     "psu_on": {
         "speaker": "Вениамин",
         "text": "Компьютер запустился! Всё работает!",
-        "success": true,
+        "success": "True",
         "choices": []
     },
     "stage2": {
@@ -99,7 +99,7 @@
     "stage2_6": {
         "speaker": "Система",
         "text": "Вы открываете терминал и начинаете диагностику.",
-        "success": true
+        "success": "True"
     },
     "stage3": {
         "name": "stage3",

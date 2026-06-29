@@ -56,9 +56,27 @@ class redraw():
         """
         
         """
+        # terminal = commands_parser.cli("PC-ADM")
+        # gameEvent = save.downloadGameEvent()
+        # gameEvent = "desktop"
         window.blit(backGround, (0, 0))
         if settingsButton.press(window):
             return "setting"
+        # if gameEvent == "dialog":
+        #     stage.draw()
+        #     stage.handleEvent(event)
+        #     gameEvent = save.downloadGameEvent()
+        # if gameEvent == "desktop":
+        #     if cliItem.press(window):
+        #         gameEvent = "cli"
+        # else:
+        #     if closeItem.press(window):
+        #         gameEvent = "desktop"
+        #         gameEvent = save.downloadGameEvent()
+        # if gameEvent == "cli":
+        #     # terminal = commands_parser.cli(stage.current_PC())
+        #     terminal.inputCLI(event)
+        #     terminal.outputCLI(window)
         return "game"
     
     def setting():
@@ -78,14 +96,14 @@ class redraw():
         return "setting"
 
 run = True
-terminal = commands_parser.cli("PC-ADM")
+stage = stages_parser.dialogueManager(window)
+save = saves_parser.saveManager()
 gameState = "menu"
 gameMusic = ""
-gameEvent = "desktop"
 frame = gameSettings.getFrame()
-stage = stages_parser.dialogueManager(window)
-stage.loadDialogue("data/stages.json")
-save = saves_parser.saveManager()
+terminal = commands_parser.cli("PC-ADM")
+gameEvent = save.downloadGameEvent()
+
 
 while run:
     clock.tick(frame)
@@ -95,32 +113,23 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-
-        if stage.active:
-            stage.handleEvent(event)
-        else:
-            if gameState == "game":
-                stage.start(save.downloadSave())
-
         if gameState == "menu":
             gameState = redraw.menu()
-        elif gameState == "game":
+        if gameState == "game":
             gameState = redraw.game()
             if gameEvent == "dialog":
-                if stage.active:
-                    stage.draw()
-                else:
-                    if not stage.active and stage.result:
-                        stage.save_result("data/stages.json")
-                        print("Глава завершена, result обновлён!")
-                        stage.result = False
-            if gameEvent == "desktop":
+                stage.draw()
+                stage.handleEvent(event)
+                gameEvent = save.downloadGameEvent()
+            elif gameEvent == "desktop":
                 if cliItem.press(window):
                     gameEvent = "cli"
             else:
                 if closeItem.press(window):
                     gameEvent = "desktop"
+                    gameEvent = save.downloadGameEvent()
             if gameEvent == "cli":
+                # terminal = commands_parser.cli(stage.current_PC())
                 terminal.inputCLI(event)
                 terminal.outputCLI(window)
         elif gameState == "setting":

@@ -55,6 +55,17 @@ class saveManager():
         self._loadSave()
         return self.save["stage"]
     
+    def downloadGameEvent(self):
+        with open(self.jsonPathStages, 'r', encoding='utf-8') as f:
+            self.nodesStages = json.load(f)
+        with open(self.jsonPathMachines, 'r', encoding='utf-8') as f:
+            self.nodesMachines = json.load(f)
+        self.stage = self.downloadSave()
+        if self.nodesStages[self.stage]["result"] == "False":
+            return "dialog"
+        elif self.nodesMachines[self.stage]["result"] == "False":
+            return "desktop"
+    
     def _resetSave(self):
         """
          

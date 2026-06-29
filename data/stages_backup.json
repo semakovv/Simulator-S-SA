@@ -5,84 +5,101 @@
         "speaker": "Вениамин",
         "text": "Захожу в комнату. Компьютер не включается...",
         "choices": [
-            {"text": "Проверить кабель питания", "next_node": "check_cable"},
-            {"text": "Проверить кнопку включения", "next_node": "check_button"},
-            {"text": "Вызвать специалиста", "next_node": "call_specialist"}
+            {
+                "text": "Проверить кабель питания",
+                "next_node": "check_cable"
+            },
+            {
+                "text": "Проверить кнопку включения",
+                "next_node": "check_button"
+            },
+            {
+                "text": "Вызвать специалиста",
+                "next_node": "call_specialist"
+            }
         ]
     },
     "check_cable": {
         "speaker": "Вениамин",
         "text": "Кабель подключён, но ничего не происходит.",
         "choices": [
-            {"text": "Проверить блок питания", "next_node": "check_psu"},
-            {"text": "Вернуться назад", "next_node": "stage1"}
+            {
+                "text": "Проверить блок питания",
+                "next_node": "check_psu"
+            },
+            {
+                "text": "Вернуться назад",
+                "next_node": "stage1"
+            }
         ]
     },
     "check_button": {
         "speaker": "Вениамин",
         "text": "Кнопка нажимается, но система молчит.",
         "choices": [
-            {"text": "Проверить блок питания", "next_node": "check_psu"}
+            {
+                "text": "Проверить блок питания",
+                "next_node": "check_psu"
+            }
         ]
     },
     "call_specialist": {
         "speaker": "Вениамин",
         "text": "Специалист сказал: «Проверь блок питания».",
         "choices": [
-            {"text": "Проверить блок питания", "next_node": "check_psu"}
+            {
+                "text": "Проверить блок питания",
+                "next_node": "check_psu"
+            }
         ]
     },
     "check_psu": {
         "speaker": "Вениамин",
         "text": "Ага! Блок питания выключен. Включаю тумблер...",
         "choices": [
-            {"text": "Включить блок питания", "next_node": "psu_on"}
+            {
+                "text": "Включить блок питания",
+                "next_node": "psu_on"
+            }
         ]
     },
     "psu_on": {
         "speaker": "Вениамин",
         "text": "Компьютер запустился! Всё работает!",
-        "success": true,
+        "success": "True",
         "choices": []
     },
-
     "stage2": {
         "name": "stage2",
         "result": "False",
         "speaker": "Роберт",
-        "text": "Вениамин, принтер не печатает. Помоги!",
-        "choices": [
-            {"text": "Проверить подключение принтера", "next_node": "printer_check_cable"},
-            {"text": "Перезагрузить принтер", "next_node": "printer_reboot"},
-            {"text": "Сказать, что я занят", "next_node": "printer_ignore"}
-        ]
+        "text": "Вениамин, у меня принтер не печатает.",
+        "next_node": "stage2_2"
     },
-    "printer_check_cable": {
+    "stage2_2": {
         "speaker": "Вениамин",
-        "text": "Кабель USB отвалился. Подключаю...",
-        "choices": [
-            {"text": "Подключить кабель", "next_node": "printer_ok"}
-        ]
+        "text": "Что именно не работает?",
+        "next_node": "stage2_3"
     },
-    "printer_reboot": {
+    "stage2_3": {
+        "speaker": "Роберт",
+        "text": "Я проверил всё: кабели, бумагу, картриджи — всё в порядке. Но он молчит.",
+        "next_node": "stage2_4"
+    },
+    "stage2_4": {
         "speaker": "Вениамин",
-        "text": "Перезагружаю принтер. Он издал звук...",
-        "choices": [
-            {"text": "Попробовать печать", "next_node": "printer_ok"}
-        ]
+        "text": "Хорошо, я посмотрю. Подойди к терминалу и проверь настройки сети.",
+        "next_node": "stage2_5"
     },
-    "printer_ignore": {
+    "stage2_5": {
         "speaker": "Роберт",
-        "text": "Ладно, я сам разберусь...",
-        "choices": [
-            {"text": "Всё равно помочь", "next_node": "printer_check_cable"}
-        ]
+        "text": "Спасибо, Вениамин! Я попробую.",
+        "next_node": "stage2_6"
     },
-    "printer_ok": {
-        "speaker": "Роберт",
-        "text": "Ура! Принтер заработал! Спасибо, Вениамин!",
-        "success": true,
-        "choices": []
+    "stage2_6": {
+        "speaker": "Система",
+        "text": "Вы открываете терминал и начинаете диагностику.",
+        "success": "True"
     },
     "stage3": {
         "name": "stage3",
