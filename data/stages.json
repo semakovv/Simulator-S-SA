@@ -1,7 +1,7 @@
 ﻿{
     "stage1": {
         "name": "stage1",
-        "result": "True",
+        "result": "False",
         "CLI": "PC-ADM",
         "speaker": "Вениамин",
         "text": "Захожу в комнату. Компьютер не включается...",

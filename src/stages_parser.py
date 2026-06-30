@@ -51,7 +51,7 @@ class dialogueManager:
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
-            if self.current_node.get('choices'):  # есть варианты выбора
+            if self.current_node.get('choices'):
                 if event.key == pygame.K_UP:
                     self.selected_choice = (self.selected_choice - 1) % len(self.current_node['choices'])
                 elif event.key == pygame.K_DOWN:
@@ -61,9 +61,8 @@ class dialogueManager:
                     next_node = choice.get('next_node')
                     if next_node and next_node in self.nodes:
                         self.current_node = self.nodes[next_node]
-                        self.selected_choice = 0  # сброс индекса при переходе
+                        self.selected_choice = 0 
             else:
-                # линейный диалог (без choices)
                 if event.key == pygame.K_SPACE:
                     next_node = self.current_node.get('next_node')
                     if next_node and next_node in self.nodes:
