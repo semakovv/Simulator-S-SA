@@ -25,32 +25,33 @@ class dialogueManager:
         self.rect.bottom = screen.get_height() - 30
         self.json_path = "data/stages.json"
         self.stage = sp.saveManager().downloadSave()
-        with open(self.json_path, 'r', encoding='utf-8') as f:
+        with open(self.json_path, 'r', encoding='utf-8-sig') as f:
             self.nodes = json.load(f)
         self.current_node = self.nodes[self.stage]
         self.current_stage = self.stage
         
     def __loadDialog(self):
             self.stage = sp.saveManager().downloadSave()
-            with open(self.json_path, 'r', encoding='utf-8') as f:
+            with open(self.json_path, 'r', encoding='utf-8-sig') as f:
                 self.nodes = json.load(f)
             self.current_node = self.nodes[self.stage]
             self.current_stage = self.stage
+            print(self.stage)
 
     def __restoringStage(self):
         if self.current_node["success"] == "True":
             self.result = "True"
             self.nodes[self.current_stage]["result"] = "True"
-            with open(self.json_path, 'w', encoding='utf-8') as f:
+            with open(self.json_path, 'w', encoding='utf-8-sig') as f:
                 json.dump(self.nodes, f, indent=4, ensure_ascii=False)
-            self.__loadDialog()
+            
 
-    def current_PC(self):
-        return self.nodes[self.current_stage]["PC"]
+    def current_CLI(self):
+        return self.nodes[self.current_stage]["CLI"]
 
     def handleEvent(self, event):
-        # self.__loadDialog()
         if event.type == pygame.KEYDOWN:
+            if self.current_node.get('choices'):  # есть варианты выбора
                 if event.key == pygame.K_UP:
                     self.selected_choice = (self.selected_choice - 1) % len(self.current_node['choices'])
                 elif event.key == pygame.K_DOWN:
@@ -60,14 +61,17 @@ class dialogueManager:
                     next_node = choice.get('next_node')
                     if next_node and next_node in self.nodes:
                         self.current_node = self.nodes[next_node]
-                
-            if event.key == pygame.K_SPACE:
-                next_node = self.current_node.get('next_node')
-                if next_node and next_node in self.nodes:
-                    self.current_node = self.nodes[next_node]
-                    self.selected_choice = 0
-            if event.key == pygame.K_RETURN:
-                self.__restoringStage()
+                        self.selected_choice = 0  # сброс индекса при переходе
+            else:
+                # линейный диалог (без choices)
+                if event.key == pygame.K_SPACE:
+                    next_node = self.current_node.get('next_node')
+                    if next_node and next_node in self.nodes:
+                        self.current_node = self.nodes[next_node]
+                        self.selected_choice = 0
+                if event.key == pygame.K_RETURN:
+                    self.__restoringStage()
+                    self.__loadDialog()
 
 
     def draw(self):
@@ -88,7 +92,7 @@ class dialogueManager:
             surf.blit(text_surf, (20, y))
             y += self.font.get_height() + 2
 
-        if self.current_node.get('choices'):
+        if self.current_node.get('choices') and len(self.current_node['choices']) > 0:
             y += 20
             for i, choice in enumerate(self.current_node['choices']):
                 color = self.choice_selected_color if i == self.selected_choice else self.choice_color

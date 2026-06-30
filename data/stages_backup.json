@@ -2,6 +2,7 @@
     "stage1": {
         "name": "stage1",
         "result": "False",
+        "CLI": "PC-ADM",
         "speaker": "Вениамин",
         "text": "Захожу в комнату. Компьютер не включается...",
         "choices": [
@@ -72,6 +73,7 @@
     "stage2": {
         "name": "stage2",
         "result": "False",
+        "CLI": "PC-BOSS",
         "speaker": "Роберт",
         "text": "Вениамин, у меня принтер не печатает.",
         "next_node": "stage2_2"
@@ -103,6 +105,14 @@
     },
     "stage3": {
         "name": "stage3",
+        "result": "False",
+        "CLI": "PC-ADM",
+        "speaker": "Система",
+        "text": "Игра пройдена. Спасибо за прохождение!",
+        "success": "True"
+    },
+    "stage4": {
+        "name": "stage4",
         "result": "End"
     }
 }

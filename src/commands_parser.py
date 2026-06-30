@@ -31,7 +31,7 @@ class cli():
         self.ipAddressList = []
         self.ipRouteList = []
         self.result = "False"
-        with open(self.json_path, 'r', encoding='utf-8') as f:
+        with open(self.json_path, 'r', encoding='utf-8-sig') as f:
             self.nodes = json.load(f)
 
     def ___ping(self, dst):
@@ -42,21 +42,36 @@ class cli():
             src = self.nodes[self.stage]["machines"][self.machine]
             src = "".join(src["config"]["eth0"])
             srcID = self.ipAddressList.index(src)
-            if dst + "/25" in self.ipAddressList:
-                dstID = self.ipAddressList.index(dst + "/25")
-                for i in range(1, len(self.matrixWays[1::])):
-                    for j in range(1, len(self.matrixWays[1::])):
-                        # print(self.matrixWays[1][1::][srcID], self.matrixWays[j][1::][dstID])
-                        if self.matrixWays[i][j] == "1":
-                            # print(self.matrixWays[i][j])
-                            srcID += 1
-                            if self.matrixWays[i+1][j] == "0":
-                                if self.matrixWays[i+1][j+1] == "0":
-                                    break
-                        if src == dst + "/25" or srcID == dstID:
-                            ping = True
-                            break
-                    # print(srcID, dstID)
+            if dst + "/24" in self.ipAddressList:
+                dstID = self.ipAddressList.index(dst + "/24")
+                if srcID <= dstID:
+                    for i in range(1, len(self.matrixWays[1::])):
+                        for j in range(1, len(self.matrixWays[1::])):
+                            # print(self.matrixWays[1][1::][srcID], self.matrixWays[j][1::][dstID])
+                            if self.matrixWays[i][j] == "1":
+                                # print(self.matrixWays[i][j])
+                                srcID += 1
+                                if self.matrixWays[i+1][j] == "0":
+                                    if self.matrixWays[i+1][j+1] == "0":
+                                        break
+                            if src == dst + "/24" or srcID == dstID:
+                                ping = True
+                                break
+                        # print(srcID, dstID)
+                if srcID > dstID:
+                    for i in range(len(self.matrixWays[1::]), 1, -1):
+                        for j in range(len(self.matrixWays[1::]), 1, -1):
+                            # print(self.matrixWays[1][1::][srcID], self.matrixWays[j][1::][dstID])
+                            if self.matrixWays[i][j] == "1":
+                                # print(self.matrixWays[i][j])
+                                srcID -= 1
+                                if self.matrixWays[i-1][j] == "0":
+                                    if self.matrixWays[i-1][j-1] == "0":
+                                        break
+                            if src == dst + "/25" or srcID == dstID:
+                                ping = True
+                                break
+                        # print(srcID, dstID)
             return ping
 
     def __restoringLists(self):
@@ -145,11 +160,11 @@ class cli():
                     self.lines.append(f"Error {commands}")
             elif parts[1] == "del" and len(parts) >= 2:
                 if parts[2] == "address" and len(parts) >= 3:
-                    if parts[3] in self.nodes[self.stage]["machines"][self.machine]["config"]["eth0"]:
-                        self.nodes[self.stage]["machines"][self.machine]["config"]["eth0"][parts[3]] = ""
+                    if parts[3] in self.nodes[self.stage]["machines"][self.machine]["config"]["eth0"][0] == parts[3]:
+                        self.nodes[self.stage]["machines"][self.machine]["config"]["eth0"][0] = ""
                 elif parts[2] == "route" and len(parts) >= 3:
-                    if parts[3] in self.nodes[self.stage]["machines"][self.machine]["config"]["routes"]:
-                        self.nodes[self.stage]["machines"][self.machine]["config"]["routes"][parts[3]] = ""
+                    if parts[3] in self.nodes[self.stage]["machines"][self.machine]["config"]["routes"][0] == parts[3]:
+                        self.nodes[self.stage]["machines"][self.machine]["config"]["routes"][0] = ""
                 else:
                     self.lines.append(f"Error {commands}")
             elif parts[1] == "address" and len(parts) >= 2:
@@ -162,9 +177,11 @@ class cli():
             if self.___ping(parts[1]):
                 for i in range(1, 4):
                     self.lines.append(f"64 bytes from {parts[1]}: icmp_seq=1 ttl=55 time=269 ms")
-            else:
+            elif not(self.___ping(parts[1])):
                 for i in range(1, 4):
                     self.lines.append(f"From {parts[1]} icmp_seq=1 Destination Host Unreachable")
+            else:
+                self.lines.append(f"Error {commands}")
         elif command == "history":
             for i in range(len(self.history)):
                 self.lines.append(f"{i}: {self.history[i]}")
@@ -174,7 +191,7 @@ class cli():
         else:
             self.lines.append(f"Error {commands}")
 
-        with open(self.json_path, 'w', encoding='utf-8') as f:
+        with open(self.json_path, 'w', encoding='utf-8-sig') as f:
             json.dump(self.nodes, f, indent=4)      
 
     def inputCLI(self, event):

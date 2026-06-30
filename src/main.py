@@ -56,27 +56,9 @@ class redraw():
         """
         
         """
-        # terminal = commands_parser.cli("PC-ADM")
-        # gameEvent = save.downloadGameEvent()
-        # gameEvent = "desktop"
         window.blit(backGround, (0, 0))
         if settingsButton.press(window):
             return "setting"
-        # if gameEvent == "dialog":
-        #     stage.draw()
-        #     stage.handleEvent(event)
-        #     gameEvent = save.downloadGameEvent()
-        # if gameEvent == "desktop":
-        #     if cliItem.press(window):
-        #         gameEvent = "cli"
-        # else:
-        #     if closeItem.press(window):
-        #         gameEvent = "desktop"
-        #         gameEvent = save.downloadGameEvent()
-        # if gameEvent == "cli":
-        #     # terminal = commands_parser.cli(stage.current_PC())
-        #     terminal.inputCLI(event)
-        #     terminal.outputCLI(window)
         return "game"
     
     def setting():
@@ -101,8 +83,8 @@ save = saves_parser.saveManager()
 gameState = "menu"
 gameMusic = ""
 frame = gameSettings.getFrame()
-terminal = commands_parser.cli("PC-ADM")
 gameEvent = save.downloadGameEvent()
+terminal = commands_parser.cli(stage.current_CLI())
 
 
 while run:
@@ -118,6 +100,11 @@ while run:
         if gameState == "game":
             gameState = redraw.game()
             if gameEvent == "dialog":
+                current_save_stage = save.downloadSave()
+                if stage.stage != current_save_stage:
+                    stage = stages_parser.dialogueManager(window)
+                    if stage.current_CLI() != terminal.machine:
+                        terminal = commands_parser.cli(stage.current_CLI())
                 stage.draw()
                 stage.handleEvent(event)
                 gameEvent = save.downloadGameEvent()
@@ -129,7 +116,7 @@ while run:
                     gameEvent = "desktop"
                     gameEvent = save.downloadGameEvent()
             if gameEvent == "cli":
-                # terminal = commands_parser.cli(stage.current_PC())
+
                 terminal.inputCLI(event)
                 terminal.outputCLI(window)
         elif gameState == "setting":
