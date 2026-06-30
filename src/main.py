@@ -96,7 +96,7 @@ while run:
             run = False
         if gameState == "menu":
             gameState = redraw.menu()
-        if gameState == "game":
+        elif gameState == "game":
             gameState = redraw.game()
             if gameEvent == "dialog":
                 current_save_stage = save.downloadSave()

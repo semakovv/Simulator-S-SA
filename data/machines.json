@@ -1,7 +1,7 @@
 ﻿{
     "stage1": {
         "name": "stage1",
-        "result": "False",
+        "result": "True",
         "machines": {
             "PC-ADM": {
                 "name": "PC-ADM",
@@ -11,7 +11,7 @@
                         "10.1.1.2/24"
                     ],
                     "routes": [
-                        ""
+                        "10.1.1.253/24"
                     ]
                 }
             },
